@@ -1,5 +1,7 @@
 package cayetano.drools.test;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.api.runtime.KieContainer;
@@ -19,8 +21,17 @@ public class DroolsDemoApplicationTests {
 	
 	@Test
 	public void contextLoads() {
-		Transaction transaction = new Transaction(2, 12.94);
-		GameOutcome go = new GameOutcome(true, 2, "123-trans-id", transaction);
+		int outcomeState = 1;
+		String ticketId = "123-ticket-id";
+
+		int stakeTransactionType = 0;
+		int winTransactionType = 1;
+		int pendingTransactionStatus = 2;
+		int completedTransactionStatus = 0;
+		Transaction stakeTransaction = new Transaction(pendingTransactionStatus, 12.94, stakeTransactionType);
+		Transaction winTransaction = new Transaction(completedTransactionStatus, 9.56, winTransactionType);
+		
+		GameOutcome go = new GameOutcome(true, outcomeState, ticketId, Arrays.asList(stakeTransaction, winTransaction));
 		
 		StatelessKieSession kieSession = kieContainer.newStatelessKieSession("CayetanoKieSession");
 		kieSession.execute(go);
